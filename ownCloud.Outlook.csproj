@@ -26,14 +26,37 @@
     <NoStandardLibraries>false</NoStandardLibraries>
     <RootNamespace>ownCloud.Outlook</RootNamespace>
     <AssemblyName>ownCloud.Outlook</AssemblyName>
-    <LoadBehavior>3</LoadBehavior>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <DefineConstants>VSTO40</DefineConstants>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <BootstrapperComponentsLocation>HomeSite</BootstrapperComponentsLocation>
     <TargetFrameworkProfile />
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <PublishUrl>publish\</PublishUrl>
+    <InstallUrl />
+    <TargetCulture>en</TargetCulture>
+    <ApplicationVersion>1.0.0.0</ApplicationVersion>
+    <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>days</UpdateIntervalUnits>
+    <IsWebBootstrapper>False</IsWebBootstrapper>
+    <ProductName>ownCloud.Outlook</ProductName>
+    <PublisherName />
+    <SupportUrl />
+    <FriendlyName>ownCloud.Outlook</FriendlyName>
+    <OfficeApplicationDescription />
+    <LoadBehavior>3</LoadBehavior>
   </PropertyGroup>
   <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.VSTORuntime.4.0">
       <Visible>False</Visible>
       <ProductName>Microsoft Visual Studio 2010 Tools for Office Runtime %28x86 and x64%29</ProductName>
@@ -101,6 +124,12 @@
   -->
   <ItemGroup>
     <Reference Include="Accessibility" />
+    <Reference Include="AdysTech.CredentialManager, Version=2.3.0.0, Culture=neutral, PublicKeyToken=42b78d2d57493ebe, processorArchitecture=MSIL">
+      <HintPath>packages\AdysTech.CredentialManager.2.3.0\lib\net45\AdysTech.CredentialManager.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="RestSharp, Version=106.11.7.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
       <HintPath>packages\RestSharp.106.11.7\lib\net452\RestSharp.dll</HintPath>
     </Reference>
@@ -168,6 +197,11 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="Config.cs" />
+    <Compile Include="Enums\PermissionType.cs" />
+    <Compile Include="Enums\ShareType.cs" />
+    <Compile Include="RunTimeContext.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -192,6 +226,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="SettingsRibbon.cs">
+      <XmlRibbon>true</XmlRibbon>
+    </Compile>
+    <Compile Include="SharedItem.cs" />
     <Compile Include="ThisAddIn.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -203,6 +241,13 @@
     </Compile>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\owncloud-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SettingsRibbon.xml" />
+  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -214,7 +259,7 @@
     <ManifestKeyFile>ownCloud.Outlook_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>315AD1775CA1D2B8549CC28AEA528A1DEE334A00</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>C5B511F78CC280492ECDD642DE87EF398EFE7EEC</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31129.286
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1340
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ownCloud.Outlook", "ownCloud.Outlook.csproj", "{A1084580-3184-48DB-89DA-7C560D90C5A0}"
 EndProject
