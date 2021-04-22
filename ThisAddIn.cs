@@ -46,7 +46,7 @@ namespace ownCloud.Outlook
         // ReSharper disable once RedundantAssignment
         private void OnBeforeAttachementAdd(Attachment attachment, ref bool cancel)
         {
-            if (attachment.Size <= MaxAttachmentSize) return;
+            // if (attachment.Size <= MaxAttachmentSize) return;
 
             MessageBox.Show($@"Attachment will be uploaded to fileCloud because the file size exceeds the limit of {MaxAttachmentSizeMb}MB");
             var link = RunTimeContext.Instance.UploadAttachment(attachment);

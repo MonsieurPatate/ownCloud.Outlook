@@ -61,6 +61,11 @@ namespace ownCloud.Outlook
             return Resources.owncloud_icon;
         }
 
+        public void OnSettingsButtonClick(Office.IRibbonControl control)
+        {
+            new SettingsView().ShowDialog();
+        }
+
         #endregion
 
         #region Helpers

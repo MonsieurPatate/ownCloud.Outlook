@@ -1,0 +1,50 @@
+﻿<Window x:Class="ownCloud.Outlook.SettingsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:customCommands="clr-namespace:ownCloud.Outlook.CustomCommands"
+        mc:Ignorable="d" Height="136" Width="378" ResizeMode="NoResize" Loaded="Window_Loaded"
+        WindowStartupLocation="CenterScreen"
+        Title="ownCloud authorization settings">
+
+    <Window.CommandBindings>
+        <CommandBinding Command="customCommands:CustomCommands.EnterAuthorization" Executed="EnterAuthorization_Executed" />
+        <CommandBinding Command="Save" Executed="SaveCommand_Execute"/>
+    </Window.CommandBindings>
+
+    <StackPanel Margin="5">
+        <WrapPanel>
+            <Label Content="Server:" Margin="5"/>
+            <TextBox Margin="5" Width="280" Height="24" Text="{Binding Server}">
+                <TextBox.Style>
+                    <Style xmlns:sys="clr-namespace:System;assembly=mscorlib" TargetType="{x:Type TextBox}">
+                        <Style.Resources>
+                            <VisualBrush x:Key="CueBannerBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
+                                <VisualBrush.Visual>
+                                    <Label Content="https://yourOwnCloud.domain.com" Foreground="LightGray" />
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </Style.Resources>
+                        <Style.Triggers>
+                            <Trigger Property="Text" Value="{x:Static sys:String.Empty}">
+                                <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                            </Trigger>
+                            <Trigger Property="Text" Value="{x:Null}">
+                                <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter Property="Background" Value="White" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
+            <Button Margin="5" Content="Enter authorization data" Command="customCommands:CustomCommands.EnterAuthorization"/>
+        </WrapPanel>
+        <WrapPanel>
+            <Button Content="Save" Command="Save" HorizontalAlignment="Left" Margin="5" Width="75"/>
+            <Button Content="Cancel" HorizontalAlignment="Left" Margin="5" Width="75"/>
+        </WrapPanel>
+    </StackPanel>
+</Window>

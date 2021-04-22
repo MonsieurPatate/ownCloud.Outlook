@@ -2,6 +2,9 @@
 
 namespace ownCloud.Outlook
 {
+    /// <summary>
+    /// Shared file
+    /// </summary>
     internal class SharedItem
     {
         [XmlAttribute("url")]

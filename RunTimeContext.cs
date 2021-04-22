@@ -17,43 +17,43 @@ namespace ownCloud.Outlook
     {
         private static RunTimeContext _instance;
         private static IWebDavClient _webDavClient;
+        
+        // TODO after changing config or credentials recreate refresh client
+        private static IWebDavClient WebDavClient
+        {
+            get
+            {
+                if (_webDavClient != null) return _webDavClient;
+                var config = ConfigManager.Read();
+                var credential = CredentialManager.GetCredentials(Constants.AddInName);
+                var parameters = new WebDavClientParams
+                {
+                    BaseAddress = new Uri(config.Server),
+                    Credentials = credential
+                };
+                _webDavClient = new WebDavClient(parameters);
+                return _webDavClient;
+            }
+        }
 
         public static RunTimeContext Instance => _instance ?? (_instance = new RunTimeContext());
 
-        public void Init()
-        {
-            var credential = CredentialManager.GetICredential(Constants.AddInName)?.ToNetworkCredential();
-            if (credential != null)
-            {
-                bool save = true;
-                credential = CredentialManager.PromptForCredentials(Constants.AddInName, ref save, "Please, enter your credentials to log in", "Credentials for ownCloud.Outlook AddIn");
-            }
-
-            //CredentialManager.SaveCredentials("ownCloud.Outlook AddIn", credential);
-
-            var parameters = new WebDavClientParams
-            {
-                BaseAddress = new Uri("url"),
-                Credentials = new NetworkCredential("login", "pass")
-            };
-            _webDavClient = new WebDavClient(parameters);
-        }
-
         public string UploadAttachment(Attachment attachment)
         {
+            var credential = CredentialManager.GetCredentials(Constants.AddInName);
+            var config = ConfigManager.Read();
 
+            WebDavClient.PutFile(string.Concat($"remote.php/dav/files/{credential.UserName}/", attachment.FileName), File.OpenRead(attachment.GetTemporaryFilePath())).Wait();
 
-            _webDavClient.PutFile(string.Concat("remote.php/dav/files/login/", attachment.FileName), File.OpenRead(attachment.GetTemporaryFilePath())).Wait();
-
-            var client = new RestClient("url/ocs/v1.php/apps/files_sharing/api/v1")
+            var client = new RestClient($"{config.Server}/ocs/v1.php/apps/files_sharing/api/v1")
             {
-                Authenticator = new HttpBasicAuthenticator("login", "pass")
+                Authenticator = new HttpBasicAuthenticator(credential.UserName, credential.Password)
             };
 
             var request = new RestRequest("shares")
                 .AddParameter("path", "/" + attachment.FileName)
-                .AddParameter("shareType", ShareType.Public)
-                .AddParameter("permissions", PermissionType.Read)
+                .AddParameter("shareType", (int) ShareType.Public)
+                .AddParameter("permissions", (int) PermissionType.Read)
                 .AddParameter("password", 123)
                 .AddParameter("name", attachment.FileName);
             var response = client.Post<SharedItem>(request);
