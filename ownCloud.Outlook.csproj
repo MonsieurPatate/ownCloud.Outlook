@@ -206,6 +206,9 @@
     <Compile Include="CustomCommands\EnterAuthorization.cs" />
     <Compile Include="Enums\PermissionType.cs" />
     <Compile Include="Enums\ShareType.cs" />
+    <Compile Include="InspectorWrapper\InspectorObserver.cs" />
+    <Compile Include="InspectorWrapper\OutlookInspector.cs" />
+    <Compile Include="InspectorWrapper\OutlookItem.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="RunTimeContext.cs" />
     <Compile Include="Constants.cs" />
@@ -276,7 +279,7 @@
     <ManifestKeyFile>ownCloud.Outlook_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>C5B511F78CC280492ECDD642DE87EF398EFE7EEC</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>315AD1775CA1D2B8549CC28AEA528A1DEE334A00</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

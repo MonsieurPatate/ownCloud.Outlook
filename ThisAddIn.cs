@@ -8,6 +8,7 @@ using AdysTech.CredentialManager;
 using Microsoft.Office.Interop.Outlook;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using ownCloud.Outlook.InspectorWrapper;
 using RestSharp;
 using RestSharp.Authenticators;
 using WebDav;
@@ -16,6 +17,8 @@ namespace ownCloud.Outlook
 {
     public partial class ThisAddIn
     {
+        private readonly InspectorObserver _inspectorObserver = new InspectorObserver();
+
         /// <summary>
         ///     Max size in MB
         /// </summary>
@@ -29,7 +32,7 @@ namespace ownCloud.Outlook
         private void ThisAddIn_Startup(object sender, EventArgs e)
         {
             var inspectors = Application.Inspectors;
-            inspectors.NewInspector += OnCreateNewEmailInspector;
+            inspectors.NewInspector += _inspectorObserver.inspectors_NewInspector; //OnCreateNewEmailInspector;            
         }
 
         protected override Microsoft.Office.Core.IRibbonExtensibility CreateRibbonExtensibilityObject()
@@ -39,8 +42,17 @@ namespace ownCloud.Outlook
 
         private void OnCreateNewEmailInspector(Inspector inspector)
         {
+            inspector.Deactivate += Inspector_Deactivate;
+            var qq = inspector.CurrentItem is MailItem;
             if (!(inspector.CurrentItem is MailItem mailItem)) return;
             mailItem.BeforeAttachmentAdd += OnBeforeAttachementAdd;
+        }
+
+        private void Inspector_Deactivate()
+        {
+            var inspectors = Application.Inspectors;
+            
+            var qq = 1;
         }
 
         // ReSharper disable once RedundantAssignment
@@ -48,12 +60,12 @@ namespace ownCloud.Outlook
         {
             // if (attachment.Size <= MaxAttachmentSize) return;
 
-            MessageBox.Show($@"Attachment will be uploaded to fileCloud because the file size exceeds the limit of {MaxAttachmentSizeMb}MB");
-            var link = RunTimeContext.Instance.UploadAttachment(attachment);
-
-            var activeInspector = attachment.Application.ActiveInspector();
-            var mailItem = (MailItem)activeInspector.CurrentItem;
-            mailItem.Body = string.Concat(mailItem.Body, Environment.NewLine, link);
+            // MessageBox.Show($@"Attachment will be uploaded to fileCloud because the file size exceeds the limit of {MaxAttachmentSizeMb}MB");
+            // var link = RunTimeContext.Instance.UploadAttachment(attachment);
+            // 
+            // var activeInspector = attachment.Application.ActiveInspector();
+            // var mailItem = (MailItem)activeInspector.CurrentItem;
+            // mailItem.Body = string.Concat(mailItem.Body, Environment.NewLine, link);
 
             cancel = true;
         }
