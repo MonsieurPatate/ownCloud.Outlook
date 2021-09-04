@@ -31,8 +31,9 @@ namespace ownCloud.Outlook.InspectorWrappers
 
             var activeInspector = attachment.Application.ActiveInspector();
             var mailItem = (MailItem)activeInspector.CurrentItem;
-            mailItem.Body = string.Concat(mailItem.Body, Environment.NewLine, link);
-
+            var bodyIndex = mailItem.HTMLBody.IndexOf("</body>", StringComparison.InvariantCultureIgnoreCase);
+            mailItem.HTMLBody = mailItem.HTMLBody.Insert(bodyIndex, $"<br><a href=\"{link}\"/>{link}</br>");
+            // mailItem.Body.Insert(bodyLength, string.Concat(Environment.NewLine, link));
             cancel = true;
         }
     }
