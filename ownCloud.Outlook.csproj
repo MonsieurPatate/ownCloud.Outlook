@@ -204,13 +204,14 @@
     <Compile Include="Config.cs" />
     <Compile Include="CustomCommands\CustomCommands.cs" />
     <Compile Include="CustomCommands\EnterAuthorization.cs" />
+    <Compile Include="CustomEventArgs\InspectorCloseEventArgs.cs" />
     <Compile Include="Enums\PermissionType.cs" />
     <Compile Include="Enums\ShareType.cs" />
-    <Compile Include="InspectorWrapper\InspectorObserver.cs" />
-    <Compile Include="InspectorWrapper\OutlookInspector.cs" />
-    <Compile Include="InspectorWrapper\OutlookItem.cs" />
+    <Compile Include="InspectorWrappers\InspectorObserver.cs" />
+    <Compile Include="InspectorWrappers\InspectorWrapper.cs" />
+    <Compile Include="InspectorWrappers\MailItemWrapper.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="RunTimeContext.cs" />
+    <Compile Include="RuntimeContext.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

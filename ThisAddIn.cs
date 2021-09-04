@@ -1,73 +1,25 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Net;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using AdysTech.CredentialManager;
-using Microsoft.Office.Interop.Outlook;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using ownCloud.Outlook.InspectorWrapper;
-using RestSharp;
-using RestSharp.Authenticators;
-using WebDav;
+using ownCloud.Outlook.InspectorWrappers;
 
 namespace ownCloud.Outlook
 {
     public partial class ThisAddIn
     {
-        private readonly InspectorObserver _inspectorObserver = new InspectorObserver();
-
-        /// <summary>
-        ///     Max size in MB
-        /// </summary>
-        private int MaxAttachmentSizeMb => MaxAttachmentSize / (1024 * 1024);
-
-        /// <summary>
-        ///     Max size in bytes
-        /// </summary>
-        private const int MaxAttachmentSize = 1024 * 1024 * 10;
+        private InspectorObserver _inspectorObserver;
 
         private void ThisAddIn_Startup(object sender, EventArgs e)
         {
-            var inspectors = Application.Inspectors;
-            inspectors.NewInspector += _inspectorObserver.inspectors_NewInspector; //OnCreateNewEmailInspector;            
+            // enable establish connection to WebDav via https
+            ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
+
+            _inspectorObserver = new InspectorObserver(Application.Inspectors);
         }
 
         protected override Microsoft.Office.Core.IRibbonExtensibility CreateRibbonExtensibilityObject()
         {
             return new SettingsRibbon();
-        }
-
-        private void OnCreateNewEmailInspector(Inspector inspector)
-        {
-            inspector.Deactivate += Inspector_Deactivate;
-            var qq = inspector.CurrentItem is MailItem;
-            if (!(inspector.CurrentItem is MailItem mailItem)) return;
-            mailItem.BeforeAttachmentAdd += OnBeforeAttachementAdd;
-        }
-
-        private void Inspector_Deactivate()
-        {
-            var inspectors = Application.Inspectors;
-            
-            var qq = 1;
-        }
-
-        // ReSharper disable once RedundantAssignment
-        private void OnBeforeAttachementAdd(Attachment attachment, ref bool cancel)
-        {
-            // if (attachment.Size <= MaxAttachmentSize) return;
-
-            // MessageBox.Show($@"Attachment will be uploaded to fileCloud because the file size exceeds the limit of {MaxAttachmentSizeMb}MB");
-            // var link = RunTimeContext.Instance.UploadAttachment(attachment);
-            // 
-            // var activeInspector = attachment.Application.ActiveInspector();
-            // var mailItem = (MailItem)activeInspector.CurrentItem;
-            // mailItem.Body = string.Concat(mailItem.Body, Environment.NewLine, link);
-
-            cancel = true;
         }
 
         private void ThisAddIn_Shutdown(object sender, EventArgs e)

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Net;
 using AdysTech.CredentialManager;
 using Microsoft.Office.Interop.Outlook;
 using ownCloud.Outlook.Enums;
@@ -11,11 +10,11 @@ using WebDav;
 namespace ownCloud.Outlook
 {
     /// <summary>
-    /// A singleton that manages everything
+    /// A singleton that contains user info
     /// </summary>
-    public class RunTimeContext
+    public class RuntimeContext
     {
-        private static RunTimeContext _instance;
+        private static RuntimeContext _instance;
         private static IWebDavClient _webDavClient;
         
         // TODO after changing config or credentials recreate refresh client
@@ -23,20 +22,24 @@ namespace ownCloud.Outlook
         {
             get
             {
-                if (_webDavClient != null) return _webDavClient;
+                if (_webDavClient != null)
+                {
+                    return _webDavClient;
+                }
+
                 var config = ConfigManager.Read();
                 var credential = CredentialManager.GetCredentials(Constants.AddInName);
                 var parameters = new WebDavClientParams
                 {
                     BaseAddress = new Uri(config.Server),
-                    Credentials = credential
+                    Credentials = credential,
                 };
                 _webDavClient = new WebDavClient(parameters);
                 return _webDavClient;
             }
         }
 
-        public static RunTimeContext Instance => _instance ?? (_instance = new RunTimeContext());
+        public static RuntimeContext Instance => _instance ?? (_instance = new RuntimeContext());
 
         public string UploadAttachment(Attachment attachment)
         {

@@ -18,7 +18,11 @@ namespace ownCloud.Outlook
             get => _server;
             set
             {
-                if (_server == value) return;
+                if (_server == value)
+                {
+                    return;
+                }
+
                 _server = value;
                 OnPropertyChanged();
             }
